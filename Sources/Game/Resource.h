@@ -2,4 +2,7 @@
 
 #include<string>
 
-const std::string RESOURCE_DIR = "..\\..\\Resources\\";
+namespace Prizm
+{
+	const std::string RESOURCE_DIR = "..\\..\\Resources\\";
+}

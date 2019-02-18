@@ -3,6 +3,7 @@
 #include"ImGui/imgui.h"
 #include"ImGui/imgui_impl_win32.h"
 #include"ImGui/imgui_impl_dx11.h"
+#include"Resource.h"
 #include"..\Graphics\Graphics.h"
 #include"..\Input\Input.h"
 
@@ -29,6 +30,9 @@ namespace Prizm
 		ImGuiIO& io = ImGui::GetIO();
 		io.DeltaTime = 1.0f / 60.0f;
 		io.IniFilename = 0;
+
+		std::string font_path = RESOURCE_DIR + "Fonts/ABDUCTIO.ttf";
+		io.Fonts->AddFontFromFileTTF(font_path.c_str(), 30.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
 
 		ImGui_ImplWin32_Init(Graphics::GetWindowHandle());
 		ImGui_ImplDX11_Init(Graphics::GetDevice().Get(), Graphics::GetDeviceContext().Get());

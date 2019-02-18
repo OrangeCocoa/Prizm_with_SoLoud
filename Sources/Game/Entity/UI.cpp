@@ -78,6 +78,7 @@ namespace Prizm
 		_impl->_position.x += x;
 		_impl->_position.y += y;
 	}
+
 	DirectX::SimpleMath::Vector2 & UI::GetPosition(void)
 	{
 		return _impl->_position;
