@@ -19,6 +19,18 @@
     <Filter Include="ヘッダー ファイル\Adx2le">
       <UniqueIdentifier>{77559143-6206-41f6-91dc-03c4f1d79793}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\SoLoud">
+      <UniqueIdentifier>{5837a3bf-54db-43d8-aeb8-d0a92a5e6437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\SoundFramework">
+      <UniqueIdentifier>{98979496-fbbf-4a7c-a1c6-6f20cf1ea637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SoundFramework">
+      <UniqueIdentifier>{3e19943c-c1c8-4fcc-8f66-3e8b4981c7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SoLoud">
+      <UniqueIdentifier>{0c4fff26-5dff-44a1-ae87-be1e55a9da96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Framework\Adx2le\SoundSource.cpp">
@@ -27,6 +39,18 @@
     <ClCompile Include="..\..\Sources\Framework\Adx2le\Adx2leWrapper.cpp">
       <Filter>ソース ファイル\Adx2le</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Framework\Entity.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Framework\Component.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Framework\SoundFramework\Sound.cpp">
+      <Filter>ソース ファイル\SoundFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Framework\SoLoud\SoloudWrapper.cpp">
+      <Filter>ソース ファイル\SoLoud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Framework\Adx2le\Adx2leWrapper.h">
@@ -34,6 +58,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Framework\Adx2le\SoundSource.h">
       <Filter>ヘッダー ファイル\Adx2le</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Framework\Entity.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Framework\Component.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Framework\SoLoud\SoloudWrapper.h">
+      <Filter>ヘッダー ファイル\SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Framework\SoundFramework\Sound.h">
+      <Filter>ヘッダー ファイル\SoundFramework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

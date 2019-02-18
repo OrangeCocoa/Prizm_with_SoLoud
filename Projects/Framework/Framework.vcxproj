@@ -89,6 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../ThirdParty/Includes/;../../ThirdParty/Includes/Adx2le</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
@@ -100,6 +101,9 @@
       </ModuleDefinitionFile>
       <AdditionalLibraryDirectories>../../Builds/;../../ThirdParty/Lib/Debug/</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>../../ThirdParty/Lib/Debug/;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -121,6 +125,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../ThirdParty/Includes/;../../ThirdParty/Includes/Adx2le</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -132,6 +138,9 @@
       </ModuleDefinitionFile>
       <AdditionalLibraryDirectories>../../Data/;../../ThirdParty/Lib/Release/</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>../../ThirdParty/Lib/Release/;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -151,10 +160,18 @@
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Framework\Adx2le\Adx2leWrapper.cpp" />
     <ClCompile Include="..\..\Sources\Framework\Adx2le\SoundSource.cpp" />
+    <ClCompile Include="..\..\Sources\Framework\Component.cpp" />
+    <ClCompile Include="..\..\Sources\Framework\Entity.cpp" />
+    <ClCompile Include="..\..\Sources\Framework\SoLoud\SoloudWrapper.cpp" />
+    <ClCompile Include="..\..\Sources\Framework\SoundFramework\Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Framework\Adx2le\Adx2leWrapper.h" />
     <ClInclude Include="..\..\Sources\Framework\Adx2le\SoundSource.h" />
+    <ClInclude Include="..\..\Sources\Framework\Component.h" />
+    <ClInclude Include="..\..\Sources\Framework\Entity.h" />
+    <ClInclude Include="..\..\Sources\Framework\SoLoud\SoloudWrapper.h" />
+    <ClInclude Include="..\..\Sources\Framework\SoundFramework\Sound.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -74,10 +74,15 @@
     <IntDir>$(SolutionDir)\Builds\Objects\$(ProjectName)\$(Platform)\$(Configuration)/</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Data/</OutDir>
     <IntDir>$(SolutionDir)\Data\Objects\$(ProjectName)\$(Platform)\$(Configuration)/</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -86,13 +91,16 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../ThirdParty/Includes/</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../Builds/;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../Builds/;../../ThirdParty/Lib/Debug/;</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalDependencies>winmm.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,6 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>../../ThirdParty/Includes/;</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -122,7 +131,9 @@
       <EntryPointSymbol>
       </EntryPointSymbol>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../Data/;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../Data/;../../ThirdParty/Lib/Release/;</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalDependencies>winmm.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,16 +151,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Game\Adx2\Adx2Manager.cpp" />
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_Adx2le.cpp" />
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_RtAudio.cpp" />
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_WASAPI.cpp" />
     <ClCompile Include="..\..\Sources\Game\BaseSystem.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Entity\BackGround.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Entity\Enemy.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Entity\Player2D.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Entity\UI.cpp" />
     <ClCompile Include="..\..\Sources\Game\EntryPoint.cpp" />
     <ClCompile Include="..\..\Sources\Game\GameManager.cpp" />
+    <ClCompile Include="..\..\Sources\Game\ImguiManager.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Scenes\BaseScene.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Scenes\MainGameScene.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Shader.cpp" />
+    <ClCompile Include="..\..\Sources\Game\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Game\Adx2\Adx2Manager.h" />
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver.h" />
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_Adx2le.h" />
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_RtAudio.h" />
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_WASAPI.h" />
     <ClInclude Include="..\..\Sources\Game\BaseSystem.h" />
+    <ClInclude Include="..\..\Sources\Game\Entity\BackGround.h" />
+    <ClInclude Include="..\..\Sources\Game\Entity\Enemy.h" />
+    <ClInclude Include="..\..\Sources\Game\Entity\Player2D.h" />
+    <ClInclude Include="..\..\Sources\Game\Entity\UI.h" />
     <ClInclude Include="..\..\Sources\Game\GameManager.h" />
+    <ClInclude Include="..\..\Sources\Game\ImguiManager.h" />
     <ClInclude Include="..\..\Sources\Game\Resource.h" />
+    <ClInclude Include="..\..\Sources\Game\SceneManager.h" />
+    <ClInclude Include="..\..\Sources\Game\Scenes\BaseScene.h" />
+    <ClInclude Include="..\..\Sources\Game\Scenes\MainGameScene.h" />
+    <ClInclude Include="..\..\Sources\Game\Shader.h" />
+    <ClInclude Include="..\..\Sources\Game\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

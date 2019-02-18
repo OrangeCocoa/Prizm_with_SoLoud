@@ -11,7 +11,7 @@ namespace Prizm
 
 	private:
 		class Impl;
-		std::unique_ptr<Impl> impl_;
+		std::unique_ptr<Impl> _impl;
 
 	public:
 		GameManager(void);

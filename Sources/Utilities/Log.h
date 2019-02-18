@@ -14,11 +14,11 @@ namespace Prizm
 			CONSOLE_AND_FILE,
 		};
 
-		void DLL_EXPORT Initialize(LogMode, std::string&);
+		void Initialize(LogMode, std::string&);
 
-		void DLL_EXPORT Finalize(void);
+		void Finalize(void);
 
-		void DLL_EXPORT Error(const std::string&);
+		void Error(const std::string&);
 
 		template<class... Args>
 		void Error(const std::string& format, Args&&... args)
@@ -28,7 +28,7 @@ namespace Prizm
 			Error(std::string(msg));
 		}
 
-		void DLL_EXPORT Warning(const std::string&);
+		void Warning(const std::string&);
 
 		template<class... Args>
 		void Warning(const std::string& format, Args&&... args)
@@ -38,8 +38,8 @@ namespace Prizm
 			Warning(std::string(msg));
 		}
 
-		void DLL_EXPORT Info(const std::string&);
-		
+		void Info(const std::string&);
+
 		template<class... Args>
 		void Info(const std::string& format, Args&&... args)
 		{
@@ -48,8 +48,8 @@ namespace Prizm
 			Info(std::string(msg));
 		}
 
-		void DLL_EXPORT InitConsole(void);
+		void InitConsole(void);
 
-		void DLL_EXPORT InitFile(std::string&);
+		void InitFile(std::string&);
 	};
 }

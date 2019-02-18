@@ -20,15 +20,17 @@ namespace Prizm
 					dt_;
 		bool		is_stopped_;
 
-	public:
-		DLL_EXPORT PerfTimer();
-		DLL_EXPORT ~PerfTimer();
+		float Tick();
 
-		float DLL_EXPORT Tick();
-		void DLL_EXPORT Start();
-		void DLL_EXPORT Stop();
-		float DLL_EXPORT DeltaTime() const;
-		float DLL_EXPORT TotalTime() const;
-		void DLL_EXPORT Reset();
+	public:
+		PerfTimer();
+		~PerfTimer();
+
+		void Start();
+		void Stop();
+		float DeltaTime() const;
+		// not include stopped time
+		float TotalTime() const;
+		void Reset();
 	};
 }

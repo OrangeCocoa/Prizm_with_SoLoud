@@ -1,6 +1,4 @@
 
-#define DLL_EXPORT __declspec(dllexport)
-
 #include"PerfTimer.h"
 
 namespace Prizm

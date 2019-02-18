@@ -6,8 +6,6 @@
 #include<io.h>
 #include<fcntl.h>
 
-#define DLL_EXPORT __declspec(dllexport)
-
 #include"Log.h"
 #include"Utils.h"
 

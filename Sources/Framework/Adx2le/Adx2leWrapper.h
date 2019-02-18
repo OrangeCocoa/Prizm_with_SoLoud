@@ -55,8 +55,8 @@ namespace Prizm
 		~Adx2leWrapper() = default;
 
 		/* call */
-		bool DLL_EXPORT PositioningSoundInitialize(void);
-		void DLL_EXPORT PositioningSoundFinalize(void);
+		bool PositioningSoundInitialize(void);
+		void PositioningSoundFinalize(void);
 
 		bool InteractiveSoundInitialize(void);
 		void InteractiveSoundFinalize(void);

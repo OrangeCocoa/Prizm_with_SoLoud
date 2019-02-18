@@ -5,8 +5,8 @@
 
 namespace Prizm
 {
-	constexpr bool DLL_EXPORT succeeded(long hr) { return static_cast<int>(hr) >= 0; }
-	constexpr bool DLL_EXPORT failed(long hr) { return static_cast<int>(hr) < 0; }
+	constexpr bool succeeded(long hr) { return static_cast<int>(hr) >= 0; }
+	constexpr bool failed(long hr) { return static_cast<int>(hr) < 0; }
 
 	// true, false, TRUE, FALSE
 	/*inline constexpr bool succeeded(long hr) { return static_cast<int>(hr) > 0; }
@@ -14,13 +14,13 @@ namespace Prizm
 
 	namespace StrUtils
 	{
-		std::string DLL_EXPORT UnicodeToAscii(wchar_t* pwstr);
-		std::wstring DLL_EXPORT AsciiToUnicode(const char* pstr);
+		std::string UnicodeToAscii(wchar_t* pwstr);
+		std::wstring AsciiToUnicode(const char* pstr);
 
 		namespace Time
 		{
-			std::string DLL_EXPORT GetCurrentTimeAsString(void);
-			std::string DLL_EXPORT GetCurrentTimeAsStringWithBrackets(void);
+			std::string GetCurrentTimeAsString(void);
+			std::string GetCurrentTimeAsStringWithBrackets(void);
 		};
 	}
 
@@ -35,14 +35,14 @@ namespace Prizm
 			DOCUMENTS,		//	%USERPROFILE%\Documents
 		};
 
-		std::string DLL_EXPORT GetSpecialFolderPath(FolderType);
+		std::string GetSpecialFolderPath(FolderType);
 	}
 
 	namespace Utils
 	{
-		float DLL_EXPORT RandF(float low, float high);
-		int	DLL_EXPORT RandI(int low, int high);
-		size_t DLL_EXPORT RandU(size_t low, size_t high);
+		float RandF(float low, float high);
+		int	RandI(int low, int high);
+		size_t RandU(size_t low, size_t high);
 
 		template<class _T>
 		_T RandomRange(_T low, _T high)

@@ -13,25 +13,70 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\Adx2le">
+    <Filter Include="ソース ファイル\AudioDriver">
       <UniqueIdentifier>{c435d5c9-4306-48f8-8e27-40d936a37658}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Adx2le">
+    <Filter Include="ヘッダー ファイル\AudioDriver">
       <UniqueIdentifier>{ecde6710-ef04-4c24-a6f6-17de0cef5dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scenes">
+      <UniqueIdentifier>{fcd6b421-ce03-4440-aa0e-3a16440960ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scenes">
+      <UniqueIdentifier>{c01a2c08-eac2-44b8-8ee3-d124bc5d49dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Entity">
+      <UniqueIdentifier>{9796e7d6-9a73-47b7-a27b-2641944d6fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Entity">
+      <UniqueIdentifier>{d75ce27f-3cd1-4be8-aeea-a50b1c9385b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Game\EntryPoint.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Game\BaseSystem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Game\GameManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Game\Adx2\Adx2Manager.cpp">
-      <Filter>ソース ファイル\Adx2le</Filter>
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_Adx2le.cpp">
+      <Filter>ソース ファイル\AudioDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_RtAudio.cpp">
+      <Filter>ソース ファイル\AudioDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\ImguiManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Scenes\BaseScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\BaseSystem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Scenes\MainGameScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Shader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Entity\BackGround.cpp">
+      <Filter>ソース ファイル\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Entity\UI.cpp">
+      <Filter>ソース ファイル\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Entity\Player2D.cpp">
+      <Filter>ソース ファイル\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\Entity\Enemy.cpp">
+      <Filter>ソース ファイル\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Game\AudioDriver\AudioDriver_WASAPI.cpp">
+      <Filter>ソース ファイル\AudioDriver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,11 +86,50 @@
     <ClInclude Include="..\..\Sources\Game\GameManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Game\Adx2\Adx2Manager.h">
-      <Filter>ヘッダー ファイル\Adx2le</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Game\Resource.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_Adx2le.h">
+      <Filter>ヘッダー ファイル\AudioDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_RtAudio.h">
+      <Filter>ヘッダー ファイル\AudioDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver.h">
+      <Filter>ヘッダー ファイル\AudioDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\AudioDriver\AudioDriver_WASAPI.h">
+      <Filter>ヘッダー ファイル\AudioDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\ImguiManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Scenes\MainGameScene.h">
+      <Filter>ヘッダー ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Scenes\BaseScene.h">
+      <Filter>ヘッダー ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Shader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Texture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\SceneManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Entity\BackGround.h">
+      <Filter>ヘッダー ファイル\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Entity\UI.h">
+      <Filter>ヘッダー ファイル\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Entity\Player2D.h">
+      <Filter>ヘッダー ファイル\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Game\Entity\Enemy.h">
+      <Filter>ヘッダー ファイル\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

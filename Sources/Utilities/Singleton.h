@@ -3,7 +3,7 @@
 namespace Prizm
 {
 	template<class _Template>
-	class DLL_EXPORT Singleton
+	class Singleton
 	{
 	private:
 		_Template* self_;

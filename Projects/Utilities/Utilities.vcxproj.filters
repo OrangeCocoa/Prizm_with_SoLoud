@@ -21,9 +21,6 @@
     <ClCompile Include="..\..\Sources\Utilities\PerfTimer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Utilities\ResourcePool.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Utilities\Singleton.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -45,6 +42,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Utilities\Log.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Utilities\WorkerPool.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

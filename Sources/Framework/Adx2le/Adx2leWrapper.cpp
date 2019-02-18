@@ -1,6 +1,4 @@
 
-#define DLL_EXPORT __declspec(dllexport)
-
 #include"Adx2leWrapper.h"
 
 #include"..\..\Utilities\Log.h"
@@ -48,21 +46,6 @@ namespace Prizm
 	bool Adx2leWrapper::PositioningSoundInitialize(void)
 	{
 		/* 3d sound parameter */
-		/*auto temp = std::make_tuple(source_pos.x, source_pos.y, source_pos.z);
-		temp = std::forward_as_tuple(.0f, .0f, .0f);
-
-		temp = std::make_tuple(source_velocity.x, source_velocity.y, source_velocity.z);
-		temp = std::forward_as_tuple(.0f, .0f, .0f);
-
-		temp = std::make_tuple(listener_pos.x, listener_pos.y, listener_pos.z);
-		temp = std::forward_as_tuple(.0f, .0f, .0f);
-
-		temp = std::make_tuple(listener_front.x, listener_front.y, listener_front.z);
-		temp = std::forward_as_tuple(.0f, .0f, 1.f);
-
-		temp = std::make_tuple(listener_top.x, listener_top.y, listener_top.z);
-		temp = std::forward_as_tuple(.0f, 1.f, .0f);*/
-
 		source_pos_.x = 0; source_pos_.y = 0; source_pos_.z = 0;
 		source_velocity_.x = 0; source_velocity_.y = 0; source_velocity_.z = 0;
 		listener_pos_.x = 0; listener_pos_.y = 0; listener_pos_.z = 0;

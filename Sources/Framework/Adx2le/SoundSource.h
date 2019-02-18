@@ -5,8 +5,6 @@
 #include<Adx2le/cri_adx2le.h>
 #include<DirectXTK\SimpleMath.h>
 
-#define DLL_EXPORT __declspec(dllimport)
-
 #include"..\..\Utilities\ResourcePool.h"
 
 namespace Prizm

@@ -1,8 +1,6 @@
 
 #include<unordered_map>
 
-#define DLL_EXPORT __declspec(dllexport)
-
 #include"Input.h"
 
 namespace Prizm
@@ -223,8 +221,8 @@ namespace Prizm
 		bool IsScrollUp(void) { return mouse_scroll > 0 && !ignore_input; }
 		bool IsScrollDown(void) { return mouse_scroll < 0 && !ignore_input; }
 
-		int  MouseDeltaX(void) { return !ignore_input ? mouse_delta[0] : 0; }
 		int  MouseDeltaY(void) { return !ignore_input ? mouse_delta[1] : 0; }
+		int  MouseDeltaX(void) { return !ignore_input ? mouse_delta[0] : 0; }
 
 		// touch state
 		bool IsTouchPress(int count) { return touch_state[count] & (TOUCHEVENTF_DOWN | TOUCHEVENTF_MOVE); }

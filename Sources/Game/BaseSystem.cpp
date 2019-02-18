@@ -1,13 +1,8 @@
 
-#include <windows.h>
-
-#define DLL_EXPORT __declspec(dllimport)
+#include <Windows.h>
 
 #include"..\Input\Input.h"
 #pragma comment(lib, "Input.lib")
-
-#include"..\Window\Window.h"
-#pragma comment(lib, "Window.lib")
 
 #include"..\Utilities\Utils.h"
 #include"..\Utilities\Log.h"
@@ -15,10 +10,11 @@
 
 #pragma comment(lib, "Framework.lib")
 
-//#pragma comment(lib, "Graphics.lib")
+#pragma comment(lib, "Graphics.lib")
 
 #include"BaseSystem.h"
 #include"GameManager.h"
+#include"..\Graphics\Window.h"
 
 namespace Prizm
 {
@@ -26,9 +22,11 @@ namespace Prizm
 	{
 	public:
 		Impl() : app_exit_(false)
+			   , input_module_(nullptr)
 			   , game_manager_(std::make_unique<GameManager>()){}
 
 		bool app_exit_;
+		HMODULE input_module_;
 		std::unique_ptr<GameManager> game_manager_;
 
 		void MessageLoop(void)
@@ -73,7 +71,7 @@ namespace Prizm
 		}
 	};
 
-	BaseSystem::BaseSystem() : impl_(std::make_unique<Impl>()) {}
+	BaseSystem::BaseSystem() : _impl(std::make_unique<Impl>()) {}
 
 	BaseSystem::~BaseSystem() { Log::Info("~BaseSystem()"); }
 	// = default;
@@ -89,14 +87,14 @@ namespace Prizm
 
 		if (!Window::Initialize()) return false;
 
-		if (!impl_->game_manager_->Initialize(Window::GetWindowHandle())) return false;
+		if (!_impl->game_manager_->Initialize(Window::GetWindowHandle())) return false;
 
 		return true;
 	}
 
 	void BaseSystem::Run(void)
 	{
-		impl_->MessageLoop();
+		_impl->MessageLoop();
 	}
 
 	void BaseSystem::Finalize(void)
@@ -105,7 +103,7 @@ namespace Prizm
 
 		Window::Finalize();
 
-		impl_->game_manager_->Finalize();
-		impl_->game_manager_.reset();
+		_impl->game_manager_->Finalize();
+		_impl->game_manager_.reset();
 	}
 }

@@ -6,8 +6,6 @@
 #include<iomanip>
 #include "shlobj.h"
 
-#define DLL_EXPORT __declspec(dllexport)
-
 #include"Utils.h"
 
 namespace Prizm
