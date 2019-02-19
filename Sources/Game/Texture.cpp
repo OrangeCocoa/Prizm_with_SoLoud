@@ -27,11 +27,11 @@ namespace Prizm
 	class Texture::Impl
 	{
 	public:
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv_;
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> tex_2D_;
-		unsigned width_, height_;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _srv;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _tex_2d;
+		unsigned _width, _height;
 
-		std::string file_name_;
+		std::string _file_name;
 
 		Impl(void){}
 	};
@@ -43,7 +43,7 @@ namespace Prizm
 	{
 		if (filename.empty() || filename == "\"\"") return;
 
-		_impl->file_name_ = filename;
+		_impl->_file_name = filename;
 		std::string path = TEXTURE_DIR + filename;
 		std::wstring wpath(path.begin(), path.end());
 
@@ -55,22 +55,22 @@ namespace Prizm
 		{
 			if (succeeded(LoadFromTGAFile(wpath.c_str(), nullptr, *img)))
 			{
-				CreateShaderResourceView(device.Get(), img->GetImages(), img->GetImageCount(), img->GetMetadata(), &_impl->srv_);
+				CreateShaderResourceView(device.Get(), img->GetImages(), img->GetImageCount(), img->GetMetadata(), &_impl->_srv);
 
 				// get srv from img
 				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-				_impl->srv_->GetDesc(&srvDesc);
+				_impl->_srv->GetDesc(&srvDesc);
 
 				// read width & height
 				Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-				_impl->srv_->GetResource(&resource);
+				_impl->_srv->GetResource(&resource);
 
-				if (succeeded(resource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_impl->tex_2D_.GetAddressOf()))))
+				if (succeeded(resource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_impl->_tex_2d.GetAddressOf()))))
 				{
 					D3D11_TEXTURE2D_DESC desc;
-					_impl->tex_2D_->GetDesc(&desc);
-					_impl->width_ = desc.Width;
-					_impl->height_ = desc.Height;
+					_impl->_tex_2d->GetDesc(&desc);
+					_impl->_width = desc.Width;
+					_impl->_height = desc.Height;
 				}
 
 				resource.Reset();
@@ -80,22 +80,22 @@ namespace Prizm
 		{
 			if (succeeded(LoadFromWICFile(wpath.c_str(), DirectX::WIC_FLAGS_NONE, nullptr, *img)))
 			{
-				CreateShaderResourceView(device.Get(), img->GetImages(), img->GetImageCount(), img->GetMetadata(), &_impl->srv_);
+				CreateShaderResourceView(device.Get(), img->GetImages(), img->GetImageCount(), img->GetMetadata(), &_impl->_srv);
 
 				// get srv from img
 				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-				_impl->srv_->GetDesc(&srvDesc);
+				_impl->_srv->GetDesc(&srvDesc);
 
 				// read width & height
 				Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-				_impl->srv_->GetResource(&resource);
+				_impl->_srv->GetResource(&resource);
 
-				if (succeeded(resource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_impl->tex_2D_.GetAddressOf()))))
+				if (succeeded(resource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_impl->_tex_2d.GetAddressOf()))))
 				{
 					D3D11_TEXTURE2D_DESC desc;
-					_impl->tex_2D_->GetDesc(&desc);
-					_impl->width_ = desc.Width;
-					_impl->height_ = desc.Height;
+					_impl->_tex_2d->GetDesc(&desc);
+					_impl->_width = desc.Width;
+					_impl->_height = desc.Height;
 				}
 
 				resource.Reset();
@@ -105,11 +105,11 @@ namespace Prizm
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& Texture::GetSRV(void)
 	{
-		return _impl->srv_;
+		return _impl->_srv;
 	}
 
 	const DirectX::SimpleMath::Vector2 Texture::GetTextureSize(void)
 	{
-		return DirectX::SimpleMath::Vector2(static_cast<float>(_impl->width_), static_cast<float>(_impl->height_));
+		return DirectX::SimpleMath::Vector2(static_cast<float>(_impl->_width), static_cast<float>(_impl->_height));
 	}
 }

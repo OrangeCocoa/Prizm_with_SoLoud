@@ -18,23 +18,23 @@ namespace Prizm
 	class BaseScene
 	{
 	private:
-		ResourcePool<Entity> back_ground_;
-		std::unordered_map<std::string, ResourcePool<Entity>> game_objects_2D_;		// UI
-		std::unordered_map<std::string, ResourcePool<Entity>> game_objects_3D_;		// objects
+		ResourcePool<Entity> _back_ground;
+		std::unordered_map<std::string, ResourcePool<Entity>> _game_objects_2d;		// UI
+		std::unordered_map<std::string, ResourcePool<Entity>> _game_objects_3d;		// objects
 
-		ResourcePool<Shader> shaders_;
-		ResourcePool<Texture> textures_;
+		ResourcePool<Shader> _shaders;
+		ResourcePool<Texture> _textures;
 
-		std::unique_ptr<Geometry> screen_quad_;
+		std::unique_ptr<Geometry> _screen_quad;
 		
 	protected:
-		static SceneManager* scene_manager_;
-		std::unordered_map<std::string, std::vector<unsigned int>> game_object_indices_;
-		int score_;
+		static SceneManager* _scene_manager;
+		std::unordered_map<std::string, std::vector<unsigned int>> _game_object_indices;
+		int _score;
 
-		unsigned int quad_shader_;
+		unsigned int _quad_shader;
 
-		SceneManager* GetSceneManager(void) { return scene_manager_; }
+		SceneManager* GetSceneManager(void) { return _scene_manager; }
 
 		void FadeIn(unsigned int);
 
@@ -58,55 +58,55 @@ namespace Prizm
 		BaseScene(void);
 		virtual ~BaseScene(void) = default;
 		virtual void LoadScene(void) {}
-		virtual bool Update(void) { return true; }
+		virtual bool Update(void) { return false; }
 		virtual void Draw(void) {}
 		virtual void Finalize(void) {}
 
 		template<class _Type>
 		unsigned int AddBackGround(void)
 		{
-			auto game_object_index = back_ground_.Load(std::make_shared<_Type>());
-			game_object_indices_[typeid(_Type).name()].emplace_back(game_object_index);
-			back_ground_.Get(game_object_index)->Initialize();
+			auto game_object_index = _back_ground.Load(std::make_shared<_Type>());
+			_game_object_indices[typeid(_Type).name()].emplace_back(game_object_index);
+			_back_ground.Get(game_object_index)->Initialize();
 			return game_object_index;
 		}
 
 		template<class _Type>
 		std::shared_ptr<_Type> GetBackGround(unsigned int index)
 		{
-			auto game_object = back_ground_.Get(index);
+			auto game_object = _back_ground.Get(index);
 			return std::static_pointer_cast<_Type>(game_object);
 		}
 
 		template<class _Type>
 		unsigned int AddGameObject2D(void)
 		{
-			auto game_object_index = game_objects_2D_[typeid(_Type).name()].Load(std::make_shared<_Type>());
-			game_object_indices_[typeid(_Type).name()].emplace_back(game_object_index);
-			game_objects_2D_[typeid(_Type).name()].Get(game_object_index)->Initialize();
+			auto game_object_index = _game_objects_2d[typeid(_Type).name()].Load(std::make_shared<_Type>());
+			_game_object_indices[typeid(_Type).name()].emplace_back(game_object_index);
+			_game_objects_2d[typeid(_Type).name()].Get(game_object_index)->Initialize();
 			return game_object_index;
 		}
 		
 		template<class _Type>
 		std::shared_ptr<_Type> GetGameObject2D(unsigned int index)
 		{
-			auto game_object = game_objects_2D_[typeid(_Type).name()].Get(index);
+			auto game_object = _game_objects_2d[typeid(_Type).name()].Get(index);
 			return std::static_pointer_cast<_Type>(game_object);
 		}
 
 		template<class _Type>
 		unsigned int AddGameObject3D(void)
 		{
-			auto game_object_index = game_objects_3D_[typeid(_Type).name()].Load(std::make_shared<_Type>());
-			game_object_indices_[typeid(_Type).name()].emplace_back(game_object_index);
-			game_objects_3D_[typeid(_Type).name()].Get(game_object_index)->Initialize();
+			auto game_object_index = _game_objects_3d[typeid(_Type).name()].Load(std::make_shared<_Type>());
+			_game_object_indices[typeid(_Type).name()].emplace_back(game_object_index);
+			_game_objects_3d[typeid(_Type).name()].Get(game_object_index)->Initialize();
 			return game_object_index;
 		}
 
 		template<class _Type>
 		std::shared_ptr<_Type> GetGameObject3D(unsigned int index)
 		{
-			auto game_object = game_objects_3D_[typeid(_Type).name()].Get(index);
+			auto game_object = _game_objects_3d[typeid(_Type).name()].Get(index);
 			return std::static_pointer_cast<_Type>(game_object);
 		}
 

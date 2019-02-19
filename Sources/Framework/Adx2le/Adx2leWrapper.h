@@ -24,31 +24,31 @@ namespace Prizm
 	{
 	private:
 		/* default sound */
-		CriAtomExPlayerHn           player_;
-		CriAtomExVoicePoolHn        std_voice_pool_;    /* voice pool(ADX/HCA codic) */
-		CriAtomExVoicePoolHn        hcamx_voice_pool_;  /* voice pool(HCA-MX) */
-		std::vector<CriAtomExAcbHn> acb_hn_;            /* ACB handle */
-		CriAtomDbasId               dbas_id_;           /* D-BAS id*/
+		CriAtomExPlayerHn           _player;
+		CriAtomExVoicePoolHn        _std_voice_pool;    /* voice pool(ADX/HCA codic) */
+		CriAtomExVoicePoolHn        _hcamx_voice_pool;  /* voice pool(HCA-MX) */
+		std::vector<CriAtomExAcbHn> _acb_hn;            /* ACB handle */
+		CriAtomDbasId               _dbas_id;           /* D-BAS id*/
 
 		/* 3d sound */
 		// sample source
-		CriAtomEx3dSourceHn source_;
-		CriAtomExVector source_pos_;        /* sound source position */
-		CriAtomExVector source_velocity_;   /* sound source velocity */
+		CriAtomEx3dSourceHn _source;
+		CriAtomExVector     _source_pos;        /* sound source position */
+		CriAtomExVector     _source_velocity;   /* sound source velocity */
 
 		/* listener */
-		CriAtomEx3dListenerHn listener_;
-		CriAtomExVector listener_pos_;    /* listener position */
-		CriAtomExVector listener_front_;  /* listener front vector */
-		CriAtomExVector listener_top_;    /* listener up vector */
+		CriAtomEx3dListenerHn _listener;
+		CriAtomExVector       _listener_pos;    /* listener position */
+		CriAtomExVector       _listener_front;  /* listener front vector */
+		CriAtomExVector       _listener_top;    /* listener up vector */
 
 		/* interactive sound(cross fade) */
-		CriAtomExAisacControlId  aisac_control_id_;
+		CriAtomExAisacControlId  _aisac_control_id;
 
 		/* all */
-		CriAtomExPlaybackId     playback_id_;    /* VoiceキューのプレイバックID(再生開始時に保持) */
-		unsigned int current_scene_id_;
-		float pitch_;
+		CriAtomExPlaybackId     _playback_id;    /* VoiceキューのプレイバックID(再生開始時に保持) */
+		unsigned int            _current_scene_id;
+		float                   _pitch;
 
 	public:
 		Adx2leWrapper(){}

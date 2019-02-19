@@ -8,12 +8,12 @@
 
 namespace Prizm
 {
-	SceneManager* BaseScene::scene_manager_ = nullptr;
+	SceneManager* BaseScene::_scene_manager = nullptr;
 
 	BaseScene::BaseScene(void) 
 	{
 		// 2D shader
-		quad_shader_ = CreateShader("2D.hlsl");
+		_quad_shader = CreateShader("2D.hlsl");
 
 		std::vector<D3D11_INPUT_ELEMENT_DESC> ui_element =
 		{
@@ -22,10 +22,10 @@ namespace Prizm
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,		 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		CompileShader(quad_shader_, ShaderType::VS, ui_element);
-		CompileShader(quad_shader_, ShaderType::PS, ui_element);
+		CompileShader(_quad_shader, ShaderType::VS, ui_element);
+		CompileShader(_quad_shader, ShaderType::PS, ui_element);
 
-		screen_quad_ = std::make_unique<Geometry>(GeometryGenerator::Quad2D(window_width<float>, window_height<float>, 0, 0));
+		_screen_quad = std::make_unique<Geometry>(GeometryGenerator::Quad2D(window_width<float>, window_height<float>, 0, 0));
 	}
 
 	void BaseScene::FadeIn(unsigned int curr_time)
@@ -40,61 +40,61 @@ namespace Prizm
 
 	unsigned int BaseScene::CreateShader(const std::string& file_name)
 	{
-		return shaders_.Load(std::make_shared<Shader>(file_name));
+		return _shaders.Load(std::make_shared<Shader>(file_name));
 	}
 
 	void BaseScene::CompileShader(const unsigned int index, const ShaderType type, const std::vector<D3D11_INPUT_ELEMENT_DESC>& element_desc)
 	{
-		shaders_.Get(index)->CompileAndCreateFromFile(Graphics::GetDevice(), type, element_desc);
+		_shaders.Get(index)->CompileAndCreateFromFile(Graphics::GetDevice(), type, element_desc);
 	}
 
 	unsigned int BaseScene::LoadTexture(const std::string& tex_name)
 	{
-		auto index = textures_.Load(std::make_shared<Texture>());
-		textures_.Get(index)->LoadTexture(Graphics::GetDevice(), tex_name);
+		auto index = _textures.Load(std::make_shared<Texture>());
+		_textures.Get(index)->LoadTexture(Graphics::GetDevice(), tex_name);
 		return index;
 	}
 
 	const std::shared_ptr<Shader>& BaseScene::GetShader(const unsigned int index)
 	{
-		return shaders_.Get(index);
+		return _shaders.Get(index);
 	}
 
 	const std::shared_ptr<Texture>& BaseScene::GetTexture(const unsigned int index)
 	{
-		return textures_.Get(index);
+		return _textures.Get(index);
 	}
 
 	void BaseScene::ReleaseShader(const unsigned int index)
 	{
-		shaders_.Release(index);
+		_shaders.Release(index);
 	}
 
 	void BaseScene::ReleaseTexture(const unsigned int index)
 	{
-		textures_.Release(index);
+		_textures.Release(index);
 	}
 
 	void BaseScene::RunEntities(void)
 	{
-		for (unsigned int i = 0; i < back_ground_.Size(); ++i)
+		for (unsigned int i = 0; i < _back_ground.Size(); ++i)
 		{
-			if (back_ground_.Get(i))
-				back_ground_.Get(i)->Run();
+			if (_back_ground.Get(i))
+				_back_ground.Get(i)->Run();
 		}
 
-		for (auto&& game_object : game_objects_3D_)
+		for (auto&& game_object : _game_objects_3d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 					game_object.second.Get(index)->Run();
 			}
 		}
 
-		for (auto&& game_object : game_objects_2D_)
+		for (auto&& game_object : _game_objects_2d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 					game_object.second.Get(index)->Run();
@@ -104,24 +104,24 @@ namespace Prizm
 
 	void BaseScene::DrawEntities(void)
 	{
-		for (unsigned int i = 0; i < back_ground_.Size(); ++i)
+		for (unsigned int i = 0; i < _back_ground.Size(); ++i)
 		{
-			if (back_ground_.Get(i))
-				back_ground_.Get(i)->Draw();
+			if (_back_ground.Get(i))
+				_back_ground.Get(i)->Draw();
 		}
 
-		for (auto&& game_object : game_objects_3D_)
+		for (auto&& game_object : _game_objects_3d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 					game_object.second.Get(index)->Draw();
 			}
 		}
 
-		for (auto&& game_object : game_objects_2D_)
+		for (auto&& game_object : _game_objects_2d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 					game_object.second.Get(index)->Draw();
@@ -131,18 +131,18 @@ namespace Prizm
 
 	void BaseScene::FinalizeEntities(void)
 	{
-		for (unsigned int i = 0; i < back_ground_.Size(); ++i)
+		for (unsigned int i = 0; i < _back_ground.Size(); ++i)
 		{
-			if (back_ground_.Get(i))
+			if (_back_ground.Get(i))
 			{
-				back_ground_.Get(i)->Finalize();
-				back_ground_.Release(i);
+				_back_ground.Get(i)->Finalize();
+				_back_ground.Release(i);
 			}
 		}
 
-		for (auto&& game_object : game_objects_3D_)
+		for (auto&& game_object : _game_objects_3d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 				{
@@ -152,9 +152,9 @@ namespace Prizm
 			}
 		}
 
-		for (auto&& game_object : game_objects_2D_)
+		for (auto&& game_object : _game_objects_2d)
 		{
-			for (auto index : game_object_indices_[game_object.first])
+			for (auto index : _game_object_indices[game_object.first])
 			{
 				if (game_object.second.Get(index))
 				{
@@ -167,6 +167,6 @@ namespace Prizm
 
 	void BaseScene::SetSceneManager(SceneManager* sm)
 	{
-		scene_manager_ = sm;
+		_scene_manager = sm;
 	}
 }

@@ -9,7 +9,7 @@ namespace Prizm
 	class Component
 	{
 	private:
-		std::weak_ptr<Entity> owner_;
+		std::weak_ptr<Entity> _owner;
 
 	public:
 		Component(){}

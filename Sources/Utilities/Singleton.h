@@ -6,16 +6,16 @@ namespace Prizm
 	class Singleton
 	{
 	private:
-		_Template* self_;
+		_Template* _self;
 
 	public:
-		~Singleton();
-		static _Template* Instance();
+		~Singleton(void);
+		static _Template* Instance(void);
 
 	private:
 		// instance guard
-		Singleton();
+		Singleton(void);
 		Singleton(const Singleton<_Template>&);
-		Singleton<_Template>& operator=(const Singleton<_Template>&);
+		Singleton<_Template>& operator=(const Singleton<_Template>&) {};
 	};
 }

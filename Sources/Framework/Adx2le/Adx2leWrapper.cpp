@@ -46,29 +46,29 @@ namespace Prizm
 	bool Adx2leWrapper::PositioningSoundInitialize(void)
 	{
 		/* 3d sound parameter */
-		source_pos_.x = 0; source_pos_.y = 0; source_pos_.z = 0;
-		source_velocity_.x = 0; source_velocity_.y = 0; source_velocity_.z = 0;
-		listener_pos_.x = 0; listener_pos_.y = 0; listener_pos_.z = 0;
-		listener_front_.x = 0; listener_front_.y = 0; listener_front_.z = 1;
-		listener_top_.x = 0; listener_top_.y = 1; listener_top_.z = 0;
+		_source_pos.x = 0; _source_pos.y = 0; _source_pos.z = 0;
+		_source_velocity.x = 0; _source_velocity.y = 0; _source_velocity.z = 0;
+		_listener_pos.x = 0; _listener_pos.y = 0; _listener_pos.z = 0;
+		_listener_front.x = 0; _listener_front.y = 0; _listener_front.z = 1;
+		_listener_top.x = 0; _listener_top.y = 1; _listener_top.z = 0;
 
 		/* create object */
-		source_ = criAtomEx3dSource_Create(nullptr, nullptr, 0);
-		listener_ = criAtomEx3dListener_Create(nullptr, nullptr, 0);
+		_source = criAtomEx3dSource_Create(nullptr, nullptr, 0);
+		_listener = criAtomEx3dListener_Create(nullptr, nullptr, 0);
 
 		/* set object */
-		criAtomExPlayer_Set3dSourceHn(player_, source_);
-		criAtomExPlayer_Set3dListenerHn(player_, listener_);
+		criAtomExPlayer_Set3dSourceHn(_player, _source);
+		criAtomExPlayer_Set3dListenerHn(_player, _listener);
 
 		/* source initialize */
-		criAtomEx3dSource_SetPosition(source_, &source_pos_);
-		criAtomEx3dSource_SetVelocity(source_, &source_velocity_);
-		criAtomEx3dSource_Update(source_);
+		criAtomEx3dSource_SetPosition(_source, &_source_pos);
+		criAtomEx3dSource_SetVelocity(_source, &_source_velocity);
+		criAtomEx3dSource_Update(_source);
 
 		/* listener initialize */
-		criAtomEx3dListener_SetPosition(listener_, &listener_pos_);
-		criAtomEx3dListener_SetOrientation(listener_, &listener_front_, &listener_top_);
-		criAtomEx3dListener_Update(listener_);
+		criAtomEx3dListener_SetPosition(_listener, &_listener_pos);
+		criAtomEx3dListener_SetOrientation(_listener, &_listener_front, &_listener_top);
+		criAtomEx3dListener_Update(_listener);
 
 		return true;
 	}
@@ -80,7 +80,7 @@ namespace Prizm
 	bool Adx2leWrapper::InteractiveSoundInitialize(void)
 	{
 		/* AISAC control initialize CRI_XXXX_AISACCONTROL_ANY = 0 */
-		aisac_control_id_ = 0;
+		_aisac_control_id = 0;
 
 		ResetAisac();
 
@@ -94,16 +94,16 @@ namespace Prizm
 
 	void Adx2leWrapper::ResetAisac(void)
 	{
-		criAtomExPlayer_SetAisacById(player_, aisac_control_id_, .0f);
+		criAtomExPlayer_SetAisacById(_player, _aisac_control_id, .0f);
 	}
 
 	bool Adx2leWrapper::Initialize(std::string& acf_file_path)
 	{
 		CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
-		playback_id_ = 0;
-		pitch_ = 0;
-		current_scene_id_ = 0;
+		_playback_id = 0;
+		_pitch = 0;
+		_current_scene_id = 0;
 
 		criErr_SetCallback(user_error_callback_func);
 
@@ -122,7 +122,7 @@ namespace Prizm
 		criAtomEx_Initialize_WASAPI(&init_config, nullptr, 0);
 
 		/* D-Basの作成（最大ストリーム数はここで決まります） */
-		dbas_id_ = criAtomDbas_Create(nullptr, nullptr, 0);
+		_dbas_id = criAtomDbas_Create(nullptr, nullptr, 0);
 
 		/* ACFファイルの読み込みと登録 */
 		criAtomEx_RegisterAcfFile(nullptr, acf_file_path.c_str(), nullptr, 0);
@@ -136,7 +136,7 @@ namespace Prizm
 		std_vpool_config.num_voices = MAX_VOICE;
 		std_vpool_config.player_config.max_sampling_rate = MAX_SAMPLING_RATE;
 		std_vpool_config.player_config.streaming_flag = CRI_TRUE;
-		std_voice_pool_ = criAtomExVoicePool_AllocateStandardVoicePool(&std_vpool_config, nullptr, 0);
+		_std_voice_pool = criAtomExVoicePool_AllocateStandardVoicePool(&std_vpool_config, nullptr, 0);
 
 		/* HCA-MX：voice pool create */
 		CriAtomExHcaMxVoicePoolConfig hcamx_vpool_config;
@@ -144,16 +144,16 @@ namespace Prizm
 		hcamx_vpool_config.num_voices = MAX_VOICE;
 		hcamx_vpool_config.player_config.max_sampling_rate = MAX_SAMPLING_RATE;
 		hcamx_vpool_config.player_config.streaming_flag = CRI_TRUE;
-		hcamx_voice_pool_ = criAtomExVoicePool_AllocateHcaMxVoicePool(&hcamx_vpool_config, nullptr, 0);
+		_hcamx_voice_pool = criAtomExVoicePool_AllocateHcaMxVoicePool(&hcamx_vpool_config, nullptr, 0);
 
 		/* create player */
-		player_ = criAtomExPlayer_Create(nullptr, nullptr, 0);
+		_player = criAtomExPlayer_Create(nullptr, nullptr, 0);
 
 		PositioningSoundInitialize();
 		InteractiveSoundInitialize();
 
 		// 最大ピッチを設定していると、範囲内のピッチ変更ならピッチ変更時のバッファリングなしに変更してくれるっぽい
-		criAtomExPlayer_SetMaxPitch(player_, MAX_PITCH_VALUE);
+		criAtomExPlayer_SetMaxPitch(_player, MAX_PITCH_VALUE);
 
 		return true;
 	}
@@ -172,7 +172,7 @@ namespace Prizm
 #endif
 		/* get current status */
 		CriAtomExPlayerStatus playerstatus;
-		playerstatus = criAtomExPlayer_GetStatus(player_);
+		playerstatus = criAtomExPlayer_GetStatus(_player);
 
 		switch (playerstatus)
 		{
@@ -196,10 +196,10 @@ namespace Prizm
 	{
 		criAtomEx_DetachDspBusSetting();
 
-		criAtomExPlayer_Destroy(player_);
+		criAtomExPlayer_Destroy(_player);
 
-		criAtomExVoicePool_Free(hcamx_voice_pool_);
-		criAtomExVoicePool_Free(std_voice_pool_);
+		criAtomExVoicePool_Free(_hcamx_voice_pool);
+		criAtomExVoicePool_Free(_std_voice_pool);
 
 		criAtomExAcb_ReleaseAll();
 
@@ -214,7 +214,7 @@ namespace Prizm
 		}
 		criAtomExMonitor_Finalize();
 #endif
-		criAtomDbas_Destroy(dbas_id_);
+		criAtomDbas_Destroy(_dbas_id);
 
 		criAtomEx_Finalize_WASAPI();
 
@@ -223,64 +223,64 @@ namespace Prizm
 
 	void Adx2leWrapper::PositioningSoundSourceUpdate(DirectX::SimpleMath::Vector3& pos, DirectX::SimpleMath::Vector3& velocity)
 	{
-		source_pos_.x += pos.x;
-		source_pos_.y += pos.y;
-		source_pos_.z += pos.z;
+		_source_pos.x += pos.x;
+		_source_pos.y += pos.y;
+		_source_pos.z += pos.z;
 
-		source_velocity_.x += velocity.x;
-		source_velocity_.y += velocity.y;
-		source_velocity_.z += velocity.z;
+		_source_velocity.x += velocity.x;
+		_source_velocity.y += velocity.y;
+		_source_velocity.z += velocity.z;
 
-		criAtomEx3dSource_SetPosition(source_, &source_pos_);
-		criAtomEx3dSource_SetVelocity(source_, &source_velocity_);
-		criAtomEx3dSource_Update(source_);
+		criAtomEx3dSource_SetPosition(_source, &_source_pos);
+		criAtomEx3dSource_SetVelocity(_source, &_source_velocity);
+		criAtomEx3dSource_Update(_source);
 	}
 
 	void Adx2leWrapper::PositioningSoundListenerUpdate(DirectX::SimpleMath::Vector3& pos
 		, DirectX::SimpleMath::Vector3& front, DirectX::SimpleMath::Vector3& up)
 	{
-		listener_pos_.x = pos.x;
-		listener_pos_.y = pos.y;
-		listener_pos_.z = pos.z;
+		_listener_pos.x = pos.x;
+		_listener_pos.y = pos.y;
+		_listener_pos.z = pos.z;
 
-		listener_front_.x = front.x;
-		listener_front_.y = front.y;
-		listener_front_.z = front.z;
+		_listener_front.x = front.x;
+		_listener_front.y = front.y;
+		_listener_front.z = front.z;
 
-		listener_top_.x = up.x;
-		listener_top_.y = up.y;
-		listener_top_.z = up.z;
+		_listener_top.x = up.x;
+		_listener_top.y = up.y;
+		_listener_top.z = up.z;
 
-		criAtomEx3dListener_SetPosition(listener_, &listener_pos_);
-		criAtomEx3dListener_SetOrientation(listener_, &listener_front_, &listener_top_);
-		criAtomEx3dListener_Update(listener_);
+		criAtomEx3dListener_SetPosition(_listener, &_listener_pos);
+		criAtomEx3dListener_SetOrientation(_listener, &_listener_front, &_listener_top);
+		criAtomEx3dListener_Update(_listener);
 	}
 
 	void Adx2leWrapper::DecreaseAisac(void)
 	{
-		CriFloat32 aisac_val = criAtomExPlayer_GetAisacById(player_, aisac_control_id_) - DELTA_AISAC_VALUE;
-		criAtomExPlayer_SetAisacById(player_, aisac_control_id_, aisac_val);
-		criAtomExPlayer_UpdateAll(player_);
+		CriFloat32 aisac_val = criAtomExPlayer_GetAisacById(_player, _aisac_control_id) - DELTA_AISAC_VALUE;
+		criAtomExPlayer_SetAisacById(_player, _aisac_control_id, aisac_val);
+		criAtomExPlayer_UpdateAll(_player);
 	}
 
 	void Adx2leWrapper::IncreaseAisac(void)
 	{
-		CriFloat32 aisac_val = criAtomExPlayer_GetAisacById(player_, aisac_control_id_) + DELTA_AISAC_VALUE;
-		criAtomExPlayer_SetAisacById(player_, aisac_control_id_, aisac_val);
-		criAtomExPlayer_UpdateAll(player_);
+		CriFloat32 aisac_val = criAtomExPlayer_GetAisacById(_player, _aisac_control_id) + DELTA_AISAC_VALUE;
+		criAtomExPlayer_SetAisacById(_player, _aisac_control_id, aisac_val);
+		criAtomExPlayer_UpdateAll(_player);
 	}
 
 	void Adx2leWrapper::LoadAcb(const std::string& acb_file_path, const std::string& awb_file_path, unsigned int scene)
 	{
-		acb_hn_[scene] = criAtomExAcb_LoadAcbFile(nullptr, acb_file_path.c_str(), nullptr, awb_file_path.c_str(), nullptr, 0);
+		_acb_hn[scene] = criAtomExAcb_LoadAcbFile(nullptr, acb_file_path.c_str(), nullptr, awb_file_path.c_str(), nullptr, 0);
 
-		current_scene_id_ = scene;
+		_current_scene_id = scene;
 	}
 
 	void Adx2leWrapper::ReleaseAcb(unsigned int scene)
 	{
-		criAtomExAcb_Release(acb_hn_[scene]);
-		current_scene_id_ = 0;
+		criAtomExAcb_Release(_acb_hn[scene]);
+		_current_scene_id = 0;
 	}
 
 	void Adx2leWrapper::ReleaseAcbAll(void)
@@ -290,16 +290,16 @@ namespace Prizm
 
 	CriAtomExPlaybackId Adx2leWrapper::PlayGeneralCue(CriAtomExCueId start_cue_id)
 	{
-		criAtomExPlayer_SetCueId(player_, acb_hn_[0], start_cue_id);
+		criAtomExPlayer_SetCueId(_player, _acb_hn[0], start_cue_id);
 
-		return playback_id_ = criAtomExPlayer_Start(player_);
+		return _playback_id = criAtomExPlayer_Start(_player);
 	}
 
 	CriAtomExPlaybackId Adx2leWrapper::PlayCurrentCue(CriAtomExCueId start_cue_id)
 	{
-		criAtomExPlayer_SetCueId(player_, acb_hn_[current_scene_id_], start_cue_id);
+		criAtomExPlayer_SetCueId(_player, _acb_hn[_current_scene_id], start_cue_id);
 
-		return playback_id_ = criAtomExPlayer_Start(player_);
+		return _playback_id = criAtomExPlayer_Start(_player);
 	}
 
 	void Adx2leWrapper::StopCue(CriAtomExPlaybackId cue_id)
@@ -312,7 +312,7 @@ namespace Prizm
 
 	void Adx2leWrapper::Stop(void)
 	{
-		criAtomExPlayer_Stop(player_);
+		criAtomExPlayer_Stop(_player);
 		ResetAisac();
 	}
 
@@ -323,60 +323,60 @@ namespace Prizm
 
 	void Adx2leWrapper::Pause(int is_paused)
 	{
-		criAtomExPlayer_Pause(player_, is_paused);
+		criAtomExPlayer_Pause(_player, is_paused);
 	}
 
 	void Adx2leWrapper::UpPitchAll(void)
 	{
-		if (pitch_ < MAX_PITCH_VALUE)
-			pitch_ += PITCH_CHANGE_VALUE;
+		if (_pitch < MAX_PITCH_VALUE)
+			_pitch += PITCH_CHANGE_VALUE;
 
-		criAtomExPlayer_SetPitch(player_, pitch_);
-		criAtomExPlayer_UpdateAll(player_);
+		criAtomExPlayer_SetPitch(_player, _pitch);
+		criAtomExPlayer_UpdateAll(_player);
 	}
 
 	void Adx2leWrapper::UpPitch(CriAtomExPlaybackId cue_id)
 	{
-		if (pitch_ < MAX_PITCH_VALUE)
-			pitch_ += PITCH_CHANGE_VALUE;
+		if (_pitch < MAX_PITCH_VALUE)
+			_pitch += PITCH_CHANGE_VALUE;
 
-		criAtomExPlayer_SetPitch(player_, pitch_);
-		criAtomExPlayer_Update(player_, cue_id);
+		criAtomExPlayer_SetPitch(_player, _pitch);
+		criAtomExPlayer_Update(_player, cue_id);
 	}
 
 	void Adx2leWrapper::DownPitchAll(void)
 	{
-		if (pitch_ > -MAX_PITCH_VALUE)
-			pitch_ -= PITCH_CHANGE_VALUE;
+		if (_pitch > -MAX_PITCH_VALUE)
+			_pitch -= PITCH_CHANGE_VALUE;
 
-		criAtomExPlayer_SetPitch(player_, pitch_);
-		criAtomExPlayer_UpdateAll(player_);
+		criAtomExPlayer_SetPitch(_player, _pitch);
+		criAtomExPlayer_UpdateAll(_player);
 	}
 
 	void Adx2leWrapper::DownPitch(CriAtomExPlaybackId cue_id)
 	{
-		if (pitch_ > -MAX_PITCH_VALUE)
-			pitch_ -= PITCH_CHANGE_VALUE;
+		if (_pitch > -MAX_PITCH_VALUE)
+			_pitch -= PITCH_CHANGE_VALUE;
 
-		criAtomExPlayer_SetPitch(player_, pitch_);
-		criAtomExPlayer_Update(player_, cue_id);
+		criAtomExPlayer_SetPitch(_player, _pitch);
+		criAtomExPlayer_Update(_player, cue_id);
 	}
 
 	void Adx2leWrapper::RestorePitchAll(void)
 	{
-		criAtomExPlayer_SetPitch(player_, 0);
-		criAtomExPlayer_UpdateAll(player_);
+		criAtomExPlayer_SetPitch(_player, 0);
+		criAtomExPlayer_UpdateAll(_player);
 	}
 
 	void Adx2leWrapper::RestorePitch(CriAtomExPlaybackId cue_id)
 	{
-		criAtomExPlayer_SetPitch(player_, 0);
-		criAtomExPlayer_Update(player_, cue_id);
+		criAtomExPlayer_SetPitch(_player, 0);
+		criAtomExPlayer_Update(_player, cue_id);
 	}
 
 	CriAtomExPlayerHn& Adx2leWrapper::GetPlayer(void)
 	{
-		return player_;
+		return _player;
 	}
 
 	int64_t Adx2leWrapper::GetTimeMS(CriAtomExPlaybackId playback_id)

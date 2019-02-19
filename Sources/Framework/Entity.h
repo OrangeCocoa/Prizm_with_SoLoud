@@ -11,7 +11,7 @@ namespace Prizm
 	class Entity
 	{
 	private:
-		std::unordered_map<std::type_index, std::shared_ptr<Component>> components_;
+		std::unordered_map<std::type_index, std::shared_ptr<Component>> _components;
 
 	public:
 		Entity(){}
@@ -25,7 +25,7 @@ namespace Prizm
 		template<typename _ComTy, typename ... Args>
 		void AddComponent(const Args& ... args)
 		{
-			auto component = components_[typeid(_ComTy)] = std::make_shared<_ComTy>(args ...);
+			auto component = _components[typeid(_ComTy)] = std::make_shared<_ComTy>(args ...);
 			component->SetOwner(this);
 			component->Initialize();
 		}
@@ -33,7 +33,7 @@ namespace Prizm
 		template<typename _ComTy>
 		std::shared_ptr<Component>& GetComponent(void)
 		{
-			return std::static_pointer_cast<_ComTy>(components_[typeid(_ComTy)]);
+			return std::static_pointer_cast<_ComTy>(_components[typeid(_ComTy)]);
 		}
 
 		void RunComponets(void);

@@ -6,7 +6,7 @@ namespace Prizm
 	template<class _Template>
 	Singleton<_Template>::~Singleton()
 	{
-		delete self_;
+		delete _self;
 	}
 
 	template<class _Template>
@@ -17,7 +17,7 @@ namespace Prizm
 	}
 
 	template<class _Template>
-	Singleton<_Template>::Singleton() : self_(new _Template)
+	Singleton<_Template>::Singleton() : _self(new _Template)
 	{
 	}
 }

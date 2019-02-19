@@ -26,35 +26,35 @@ namespace Prizm
 	public:
 		std::string name_;
 
-		Microsoft::WRL::ComPtr<ID3D11VertexShader> vs_;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader > ps_;
-		Microsoft::WRL::ComPtr<ID3D11GeometryShader> gs_;
-		Microsoft::WRL::ComPtr<ID3D11HullShader> hs_;
-		Microsoft::WRL::ComPtr<ID3D11DomainShader> ds_;
-		Microsoft::WRL::ComPtr<ID3D11ComputeShader> cs_;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layput_;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>   _vs;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader >   _ps;
+		Microsoft::WRL::ComPtr<ID3D11GeometryShader> _gs;
+		Microsoft::WRL::ComPtr<ID3D11HullShader>     _hs;
+		Microsoft::WRL::ComPtr<ID3D11DomainShader>   _ds;
+		Microsoft::WRL::ComPtr<ID3D11ComputeShader>  _cs;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>    _input_layput;
 
-		std::vector<ShaderTexture> textures_;
+		std::vector<ShaderTexture> _textures;
 
 		Impl()
 			: name_("")
-			, vs_(nullptr)
-			, ps_(nullptr)
-			, gs_(nullptr)
-			, hs_(nullptr)
-			, ds_(nullptr)
-			, cs_(nullptr)
-			, input_layput_(nullptr){}
+			, _vs(nullptr)
+			, _ps(nullptr)
+			, _gs(nullptr)
+			, _hs(nullptr)
+			, _ds(nullptr)
+			, _cs(nullptr)
+			, _input_layput(nullptr){}
 		
 		Impl(const std::string& shader_file_name)
 			: name_(shader_file_name)
-			, vs_(nullptr)
-			, ps_(nullptr)
-			, gs_(nullptr)
-			, hs_(nullptr)
-			, ds_(nullptr)
-			, cs_(nullptr)
-			, input_layput_(nullptr){}
+			, _vs(nullptr)
+			, _ps(nullptr)
+			, _gs(nullptr)
+			, _hs(nullptr)
+			, _ds(nullptr)
+			, _cs(nullptr)
+			, _input_layput(nullptr){}
 
 		bool CreateShader(Microsoft::WRL::ComPtr<ID3D11Device>& device,
 			ShaderType type, void* buffer, const size_t shader_binary_size)
@@ -62,42 +62,42 @@ namespace Prizm
 			switch (type)
 			{
 			case ShaderType::VS:
-				if (failed(device->CreateVertexShader(buffer, shader_binary_size, nullptr, vs_.GetAddressOf())))
+				if (failed(device->CreateVertexShader(buffer, shader_binary_size, nullptr, _vs.GetAddressOf())))
 				{
 					Log::Error("Error creating vertex shader program.");
 					return false;
 				}
 				break;
 			case ShaderType::PS:
-				if (failed(device->CreatePixelShader(buffer, shader_binary_size, nullptr, ps_.GetAddressOf())))
+				if (failed(device->CreatePixelShader(buffer, shader_binary_size, nullptr, _ps.GetAddressOf())))
 				{
 					Log::Error("Error creating pixel shader program.");
 					return false;
 				}
 				break;
 			case ShaderType::GS:
-				if (failed(device->CreateGeometryShader(buffer, shader_binary_size, nullptr, gs_.GetAddressOf())))
+				if (failed(device->CreateGeometryShader(buffer, shader_binary_size, nullptr, _gs.GetAddressOf())))
 				{
 					Log::Error("Error creating pixel geometry program.");
 					return false;
 				}
 				break;
 			case ShaderType::HS:
-				if (failed(device->CreateHullShader(buffer, shader_binary_size, nullptr, hs_.GetAddressOf())))
+				if (failed(device->CreateHullShader(buffer, shader_binary_size, nullptr, _hs.GetAddressOf())))
 				{
 					Log::Error("Error creating hull shader program.");
 					return false;
 				}
 				break;
 			case ShaderType::DS:
-				if (failed(device->CreateDomainShader(buffer, shader_binary_size, nullptr, ds_.GetAddressOf())))
+				if (failed(device->CreateDomainShader(buffer, shader_binary_size, nullptr, _ds.GetAddressOf())))
 				{
 					Log::Error("Error creating domain shader program.");
 					return false;
 				}
 				break;
 			case ShaderType::CS:
-				if (failed(device->CreateComputeShader(buffer, shader_binary_size, nullptr, cs_.GetAddressOf())))
+				if (failed(device->CreateComputeShader(buffer, shader_binary_size, nullptr, _cs.GetAddressOf())))
 				{
 					Log::Error("Error creating conpute shader program.");
 					return false;
@@ -110,7 +110,7 @@ namespace Prizm
 		bool CreateInputLayout(Microsoft::WRL::ComPtr<ID3D11Device>& device,
 			const std::vector<D3D11_INPUT_ELEMENT_DESC>& element_desc, Microsoft::WRL::ComPtr<ID3DBlob>& blob)
 		{
-			if (failed(device->CreateInputLayout(&element_desc[0], element_desc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), input_layput_.GetAddressOf())))
+			if (failed(device->CreateInputLayout(&element_desc[0], element_desc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), _input_layput.GetAddressOf())))
 			{
 				Log::Error("Error creating input layout.");
 				return false;
@@ -232,34 +232,34 @@ namespace Prizm
 		switch (type)
 		{
 		case ShaderType::VS:
-			device_context->VSSetShader(_impl->vs_.Get(), nullptr, 0);
+			device_context->VSSetShader(_impl->_vs.Get(), nullptr, 0);
 			break;
 
 		case ShaderType::PS:
-			device_context->PSSetShader(_impl->ps_.Get(), nullptr, 0);
+			device_context->PSSetShader(_impl->_ps.Get(), nullptr, 0);
 			break;
 
 		case ShaderType::GS:
-			device_context->GSSetShader(_impl->gs_.Get(), nullptr, 0);
+			device_context->GSSetShader(_impl->_gs.Get(), nullptr, 0);
 			break;
 
 		case ShaderType::HS:
-			device_context->HSSetShader(_impl->hs_.Get(), nullptr, 0);
+			device_context->HSSetShader(_impl->_hs.Get(), nullptr, 0);
 			break;
 
 		case ShaderType::DS:
-			device_context->DSSetShader(_impl->ds_.Get(), nullptr, 0);
+			device_context->DSSetShader(_impl->_ds.Get(), nullptr, 0);
 			break;
 
 		case ShaderType::CS:
-			device_context->CSSetShader(_impl->cs_.Get(), nullptr, 0);
+			device_context->CSSetShader(_impl->_cs.Get(), nullptr, 0);
 			break;
 		}
 	}
 
 	void Shader::SetInputLayout(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& device_context)
 	{
-		device_context->IASetInputLayout(_impl->input_layput_.Get());
+		device_context->IASetInputLayout(_impl->_input_layput.Get());
 	}
 
 	void Shader::SetShaderResources(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& device_context,

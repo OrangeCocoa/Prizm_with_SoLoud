@@ -13,10 +13,10 @@ namespace Prizm
 	{
 	public:
 		Impl()
-		: clear_color_(ImVec4(0.45f, 0.55f, 0.60f, 1.00f))
+		: _clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f))
 		{}
 
-		ImVec4 clear_color_;
+		ImVec4 _clear_color;
 	};
 
 	ImguiManager::ImguiManager() : _impl(std::make_unique<Impl>()){}

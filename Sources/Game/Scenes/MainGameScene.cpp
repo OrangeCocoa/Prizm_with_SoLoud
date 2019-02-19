@@ -3,6 +3,7 @@
 #include"..\GameManager.h"
 #include"..\SceneManager.h"
 #include"..\ImguiManager.h"
+#include"..\AudioDriver\AudioDriver_WASAPI.h"
 #include"..\Entity\BackGround.h"
 #include"..\Entity\UI.h"
 #include"..\Entity\Player2D.h"
@@ -11,11 +12,11 @@
 #include"..\..\Graphics\Window.h"
 #include"..\..\Framework\Entity.h"
 
-//#include"..\..\Framework\SoLoud\SoloudWrapper.h"
-
 #include "SoLoud\soloud.h"
+#include "SoLoud\soloud_wav.h"
 #include "SoLoud\soloud_sfxr.h"
 #include "SoLoud\soloud_speech.h"
+#include "SoLoud\soloud_biquadresonantfilter.h"
 #pragma comment(lib, "SoLoud/soloud_static.lib")
 
 #include"ImGui/imgui.h"
@@ -38,15 +39,16 @@ namespace Prizm
 		unsigned int _enemy1_obj;
 		unsigned int _enemy2_obj;
 
-		//SoloudWrapper _soloud;
-
 		SoLoud::Soloud _soloud;
-		SoLoud::Sfxr _sfx_enemy2, _sfx_enemy1;
+		SoLoud::Sfxr _sfx_enemy1, _sfx_enemy2;
 		SoLoud::Speech _sfx_speech;
+		SoLoud::BiquadResonantFilter _filter;
 
 		int _sound_handle_enemy1 = 0;
 		int _sound_handle_enemy2 = 0;
 		int _sound_handle_speech = 0;
+
+		std::unique_ptr<AudioDriver_WASAPI> _wasapi;
 	};
 
 	MainGameScene::MainGameScene(void) : _impl(std::make_unique<Impl>()){}
@@ -61,27 +63,27 @@ namespace Prizm
 
 		// game object initialize
 		auto bg_id = this->AddBackGround<BackGround>();
-		this->GetBackGround<BackGround>(bg_id)->LoadShader(this->GetShader(this->quad_shader_));
+		this->GetBackGround<BackGround>(bg_id)->LoadShader(this->GetShader(this->_quad_shader));
 		this->GetBackGround<BackGround>(bg_id)->LoadTexture(this->GetTexture(_impl->_bg_tex));
 
 		_impl->_player_obj = this->AddGameObject2D<Player2D>();
-		this->GetGameObject2D<Player2D>(_impl->_player_obj)->LoadShader(this->GetShader(this->quad_shader_));
+		this->GetGameObject2D<Player2D>(_impl->_player_obj)->LoadShader(this->GetShader(this->_quad_shader));
 		this->GetGameObject2D<Player2D>(_impl->_player_obj)->LoadTexture(this->GetTexture(_impl->_player_tex));
 		this->GetGameObject2D<Player2D>(_impl->_player_obj)->MovePosition(0, -100);
 
 		_impl->_enemy1_obj = this->AddGameObject2D<Enemy>();
-		this->GetGameObject2D<Enemy>(_impl->_enemy1_obj)->LoadShader(this->GetShader(this->quad_shader_));
+		this->GetGameObject2D<Enemy>(_impl->_enemy1_obj)->LoadShader(this->GetShader(this->_quad_shader));
 		this->GetGameObject2D<Enemy>(_impl->_enemy1_obj)->LoadTexture(this->GetTexture(_impl->_enemy1_tex));
 		this->GetGameObject2D<Enemy>(_impl->_enemy1_obj)->MovePosition(200, 0);
 
 		_impl->_enemy2_obj = this->AddGameObject2D<Enemy>();
-		this->GetGameObject2D<Enemy>(_impl->_enemy2_obj)->LoadShader(this->GetShader(this->quad_shader_));
+		this->GetGameObject2D<Enemy>(_impl->_enemy2_obj)->LoadShader(this->GetShader(this->_quad_shader));
 		this->GetGameObject2D<Enemy>(_impl->_enemy2_obj)->LoadTexture(this->GetTexture(_impl->_enemy2_tex));
 		this->GetGameObject2D<Enemy>(_impl->_enemy2_obj)->MovePosition(0, 0);
 
 		//_impl->_soloud.Initialize();
 
-		_impl->_soloud.init(SoLoud::Soloud::CLIP_ROUNDOFF | SoLoud::Soloud::ENABLE_VISUALIZATION);
+		_impl->_soloud.init(SoLoud::Soloud::CLIP_ROUNDOFF | SoLoud::Soloud::ENABLE_VISUALIZATION | SoLoud::Soloud::LEFT_HANDED_3D);
 		_impl->_soloud.setGlobalVolume(4);
 
 		_impl->_sfx_enemy1.loadPreset(SoLoud::Sfxr::COIN, 3);
@@ -101,6 +103,9 @@ namespace Prizm
 		_impl->_sfx_speech.set3dMinMaxDistance(1, 400);
 		_impl->_sfx_speech.set3dAttenuation(SoLoud::AudioSource::EXPONENTIAL_DISTANCE, 0.25);
 		_impl->_sound_handle_speech = _impl->_soloud.play3d(_impl->_sfx_speech, 50, 0, 0);
+
+		_impl->_wasapi = std::make_unique<AudioDriver_WASAPI>();
+		_impl->_wasapi->Initialize();
 	}
 
 	bool MainGameScene::Update(void)

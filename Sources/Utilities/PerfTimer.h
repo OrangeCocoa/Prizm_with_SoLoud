@@ -11,14 +11,14 @@ namespace Prizm
 	class PerfTimer
 	{
 	private:
-		Time		base_time_,
-					prev_time_,
-					curr_time_,
-					start_time_,
-					stop_time_;
-		Duration	paused_time_,
-					dt_;
-		bool		is_stopped_;
+		Time     _base_time,
+		         _prev_time,
+	             _curr_time,
+		         _start_time,
+		         _stop_time;
+		Duration _paused_time,
+	             _dt;
+		bool     _is_stopped;
 
 		float Tick();
 

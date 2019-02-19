@@ -5,12 +5,12 @@ namespace Prizm
 {
 	void Component::SetOwner(std::shared_ptr<Entity>& entity)
 	{
-		owner_ = entity;
+		_owner = entity;
 	}
 
 	std::shared_ptr<Entity> Component::GetOwner(void)
 	{
-		auto owner = owner_.lock();
+		auto owner = _owner.lock();
 		return owner;
 	}
 }

@@ -16,8 +16,8 @@ namespace Prizm
 	{
 	public:
 		bool want_exit_;
-		std::unique_ptr<SceneManager> scene_manager_;
-		std::unique_ptr<ImguiManager> imgui_manager_;
+		std::unique_ptr<SceneManager> _scene_manager;
+		std::unique_ptr<ImguiManager> _imgui_manager;
 
 		Impl() : want_exit_(false){}
 	};
@@ -31,11 +31,11 @@ namespace Prizm
 		if (!Graphics::Initialize(window_width<int>, window_height<int>, false, window_handle, false))
 			return false;
 
-		_impl->scene_manager_ = std::make_unique<SceneManager>();
-		_impl->scene_manager_->SetNextScene<MainGameScene>();
+		_impl->_scene_manager = std::make_unique<SceneManager>();
+		_impl->_scene_manager->SetNextScene<MainGameScene>();
 
-		_impl->imgui_manager_ = std::make_unique<ImguiManager>();
-		_impl->imgui_manager_->Initialize();
+		_impl->_imgui_manager = std::make_unique<ImguiManager>();
+		_impl->_imgui_manager->Initialize();
 
 		return true;
 	}
@@ -48,14 +48,14 @@ namespace Prizm
 		}
 
 		// scene update
-		_impl->imgui_manager_->BeginFrame();
+		_impl->_imgui_manager->BeginFrame();
 
-		if (_impl->scene_manager_->Update())
+		if (_impl->_scene_manager->Update())
 		{
 			// scene draw
 			Graphics::BeginFrame();
-			_impl->scene_manager_->Draw();
-			_impl->imgui_manager_->EndFrame();
+			_impl->_scene_manager->Draw();
+			_impl->_imgui_manager->EndFrame();
 			Graphics::EndFrame();
 		}
 
@@ -64,8 +64,8 @@ namespace Prizm
 
 	void GameManager::Finalize(void)
 	{
-		_impl->imgui_manager_->Finalize();
-		_impl->scene_manager_->Finalize();
+		_impl->_imgui_manager->Finalize();
+		_impl->_scene_manager->Finalize();
 		Graphics::Finalize();
 	}
 }

@@ -3,33 +3,33 @@
 
 namespace Prizm
 {
-	PerfTimer::PerfTimer() : is_stopped_(false){}
+	PerfTimer::PerfTimer() : _is_stopped(false){}
 	PerfTimer::~PerfTimer() = default;
 
 	float PerfTimer::Tick()
 	{
-		if (is_stopped_)
+		if (_is_stopped)
 		{
-			dt_ = Duration::zero();
-			return dt_.count();
+			_dt = Duration::zero();
+			return _dt.count();
 		}
 
-		curr_time_ = std::chrono::system_clock::now();
-		dt_ = curr_time_ - prev_time_;
+		_curr_time = std::chrono::system_clock::now();
+		_dt = _curr_time - _prev_time;
 
-		prev_time_ = curr_time_;
-		dt_ = dt_.count() < 0.0f ? dt_.zero() : dt_;
+		_prev_time = _curr_time;
+		_dt = _dt.count() < 0.0f ? _dt.zero() : _dt;
 
-		return dt_.count();
+		return _dt.count();
 	}
 
 	void PerfTimer::Start()
 	{
-		if (is_stopped_)
+		if (_is_stopped)
 		{
-			paused_time_ = start_time_ - stop_time_;
-			prev_time_ = std::chrono::system_clock::now();
-			is_stopped_ = false;
+			_paused_time = _start_time - _stop_time;
+			_prev_time = std::chrono::system_clock::now();
+			_is_stopped = false;
 		}
 		Tick();
 	}
@@ -37,32 +37,32 @@ namespace Prizm
 	void PerfTimer::Stop()
 	{
 		Tick();
-		if (!is_stopped_)
+		if (!_is_stopped)
 		{
-			stop_time_ = std::chrono::system_clock::now();
-			is_stopped_ = true;
+			_stop_time = std::chrono::system_clock::now();
+			_is_stopped = true;
 		}
 	}
 
 	float PerfTimer::DeltaTime() const
 	{
-		return dt_.count();
+		return _dt.count();
 	}
 
 	float PerfTimer::TotalTime() const
 	{
 		Duration total_time = Duration::zero();
 
-		if (is_stopped_) total_time = (stop_time_ - base_time_) - paused_time_;
-		else total_time = (curr_time_ - base_time_) - paused_time_;
+		if (_is_stopped) total_time = (_stop_time - _base_time) - _paused_time;
+		else total_time = (_curr_time - _base_time) - _paused_time;
 
 		return total_time.count();
 	}
 
 	void PerfTimer::Reset()
 	{
-		base_time_ = prev_time_ = std::chrono::system_clock::now();
-		is_stopped_ = true;
-		dt_ = Duration::zero();
+		_base_time = _prev_time = std::chrono::system_clock::now();
+		_is_stopped = true;
+		_dt = Duration::zero();
 	}
 }

@@ -10,13 +10,13 @@ namespace Prizm
 	class SceneManager
 	{
 	private:
-		std::unique_ptr<BaseScene> cur_scene_;
+		std::unique_ptr<BaseScene> _cur_scene;
 
 	public:
 		SceneManager(void)
 		{
-			cur_scene_ = std::make_unique<BaseScene>();
-			cur_scene_->SetSceneManager(this);
+			_cur_scene = std::make_unique<BaseScene>();
+			_cur_scene->SetSceneManager(this);
 		}
 
 		~SceneManager(void) = default;
@@ -24,31 +24,31 @@ namespace Prizm
 		template<class SceneTypes>
 		void SetNextScene(void)
 		{
-			if (cur_scene_)
+			if (_cur_scene)
 			{
-				cur_scene_->Finalize();
-				cur_scene_.reset();
+				_cur_scene->Finalize();
+				_cur_scene.reset();
 			}
 			
-			cur_scene_ = std::make_unique<SceneTypes>();
-			cur_scene_->LoadScene();
+			_cur_scene = std::make_unique<SceneTypes>();
+			_cur_scene->LoadScene();
 
 			Log::Info("Scene changed.");
 		}
 
 		bool Update(void)
 		{
-			return cur_scene_->Update();
+			return _cur_scene->Update();
 		}
 
 		void Draw(void)
 		{
-			cur_scene_->Draw();
+			_cur_scene->Draw();
 		}
 
 		void Finalize(void)
 		{
-			cur_scene_->Finalize();
+			_cur_scene->Finalize();
 		}
 	};
 }

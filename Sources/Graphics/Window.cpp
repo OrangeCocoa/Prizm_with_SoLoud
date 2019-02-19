@@ -18,18 +18,18 @@ namespace Prizm
 {
 	namespace Window
 	{
-		HINSTANCE	instance_;
-		HWND		window_handle_;
-		int			screen_width_, screen_height_;
-		bool		multi_touch_enable_;
+		HINSTANCE	_instance;
+		HWND		_window_handle;
+		int			_screen_width, _screen_height;
+		bool		_multi_touch_enable;
 
 		void InitRawInputDevices(void)
 		{
 			// register touch window for raw input
 			/*if (GetSystemMetrics(SM_DIGITIZER) & NID_MULTI_INPUT)
 			{
-				RegisterTouchWindow(window_handle_, 0);
-				multi_touch_enable_ = true;
+				RegisterTouchWindow(_window_handle, 0);
+				_multi_touch_enable = true;
 			}*/
 
 			// register mouse for raw input
@@ -38,7 +38,7 @@ namespace Prizm
 			Rid[0].usUsagePage = (USHORT)0x01;	// HID_USAGE_PAGE_GENERIC;
 			Rid[0].usUsage = (USHORT)0x02;	// HID_USAGE_GENERIC_MOUSE;
 			Rid[0].dwFlags = 0;
-			Rid[0].hwndTarget = window_handle_;
+			Rid[0].hwndTarget = _window_handle;
 
 			// Cast between semantically different integer types : a Boolean type to HRESULT.
 			if (FALSE == (RegisterRawInputDevices(Rid, 1, sizeof(RAWINPUTDEVICE))))
@@ -224,20 +224,20 @@ namespace Prizm
 		RECT window_rect = { 0, 0, window_width<long>, window_height<long> };
 		AdjustWindowRectEx(&window_rect, WS_OVERLAPPEDWINDOW, true, 0);
 
-		screen_width_ = window_rect.right - window_rect.left;
-		screen_height_ = window_rect.bottom - window_rect.top;
+		_screen_width = window_rect.right - window_rect.left;
+		_screen_height = window_rect.bottom - window_rect.top;
 
 		RECT desktop_rect;
 		GetWindowRect(GetDesktopWindow(), &desktop_rect);
 
-		int x = desktop_rect.right < window_rect.right ? 0 : (desktop_rect.right - screen_width_) / 2;
-		int y = desktop_rect.bottom < window_rect.bottom ? 0 : (desktop_rect.bottom - screen_height_) / 2;
+		int x = desktop_rect.right < window_rect.right ? 0 : (desktop_rect.right - _screen_width) / 2;
+		int y = desktop_rect.bottom < window_rect.bottom ? 0 : (desktop_rect.bottom - _screen_height) / 2;
 
-		window_handle_ = CreateWindowExA(0, window_caption<LPCSTR>, window_caption<LPCSTR>,
+		_window_handle = CreateWindowExA(0, window_caption<LPCSTR>, window_caption<LPCSTR>,
 			WS_OVERLAPPEDWINDOW - (WS_MAXIMIZEBOX + WS_THICKFRAME),
-			x, y, screen_width_, screen_height_, 0, 0, GetModuleHandleA(nullptr), 0);
+			x, y, _screen_width, _screen_height, 0, 0, GetModuleHandleA(nullptr), 0);
 
-		if (window_handle_ == nullptr)
+		if (_window_handle == nullptr)
 		{
 			Log::Error("Can't create window. Window handle is null pointer.");
 			PostQuitMessage(0);
@@ -246,7 +246,7 @@ namespace Prizm
 
 		InitRawInputDevices();
 
-		ShowWindow(window_handle_, SW_SHOW);
+		ShowWindow(_window_handle, SW_SHOW);
 
 		Log::Info("Window initialize succeeded.");
 
@@ -255,17 +255,17 @@ namespace Prizm
 
 	void Window::Finalize(void)
 	{
-		DestroyWindow(window_handle_);
-		window_handle_ = nullptr;
+		DestroyWindow(_window_handle);
+		_window_handle = nullptr;
 
-		UnregisterClassA(window_caption<LPCSTR>, instance_);
-		instance_ = nullptr;
+		UnregisterClassA(window_caption<LPCSTR>, _instance);
+		_instance = nullptr;
 
 		Log::Info("Window finalize succeeded. Bye~~~");
 	}
 
 	HWND Window::GetWindowHandle(void)
 	{
-		return window_handle_;
+		return _window_handle;
 	}
 }

@@ -9,36 +9,47 @@ namespace Prizm
 	class ResourcePool
 	{
 	private:
-		std::vector<std::shared_ptr<_ResourceType>> resources_;
+		std::vector<std::shared_ptr<_ResourceType>> _resources;
 
 		// reuce a resource index queue
-		std::vector<unsigned int> reuce_;
+		std::vector<unsigned int> _reuce;
 
 	public:
 		const std::shared_ptr<_ResourceType> &Get(unsigned int index)
 		{
-			return resources_[index];
+			return _resources[index];
 		}
 
 		const unsigned int Load(const std::shared_ptr<_ResourceType>& resource)
 		{
-			if (reuce_.size())
+			if (_reuce.size())
 			{
-				auto& reuse_index = reuce_.back();
-				reuce_.pop_back();
+				auto& reuse_index = _reuce.back();
+				_reuce.pop_back();
 
-				resources_[reuse_index] = std::move(resource);
+				_resources[reuse_index] = std::move(resource);
 				return reuse_index;
 			}
 
-			resources_.emplace_back(std::move(resource));
-			return static_cast<unsigned int>(resources_.size() - 1);
+			_resources.emplace_back(std::move(resource));
+			return static_cast<unsigned int>(_resources.size() - 1);
 		}
 
 		void Release(const unsigned int& index)
 		{
-			resources_[index] = nullptr;
-			reuce_.emplace_back(index);
+			_resources[index].reset();
+			_reuce.emplace_back(index);
+		}
+
+		void Reset(void)
+		{
+			for (auto& resource : _resources)
+			{
+				resource = nullptr;
+			}
+
+			_resources.clear();
+			_reuce.clear();
 		}
 
 		const unsigned int Size(void)
@@ -46,12 +57,33 @@ namespace Prizm
 			return [&]()
 			{
 				unsigned int i = 0;
-				for (auto& resource : resources_)
+				for (auto& resource : _resources)
 				{
 					if (resource) ++i;
 				}
 				return i;
 			}();
+		}
+
+		bool EmptyResource(void)
+		{
+			if (_resources.empty()) return true;
+
+			return false;
+		}
+
+		bool EmptyReuce(void)
+		{
+			if (_reuce.empty()) return true;
+
+			return false;
+		}
+
+		bool Empty(void)
+		{
+			if (_resources.empty() && _reuce.empty()) return true;
+
+			return false;
 		}
 	};
 }

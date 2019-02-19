@@ -4,8 +4,8 @@
 
 int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	Prizm::BaseSystem game;
-	if (game.Initialize()) game.Run();
-	game.Finalize();
+	Prizm::BaseSystem app;
+	if (app.Initialize()) app.Run();
+	app.Finalize();
 	return 0;
 }

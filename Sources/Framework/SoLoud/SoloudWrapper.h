@@ -32,97 +32,27 @@ namespace Prizm
 	public:
 		void Initialize(void);
 
-		void SetSpeechText(void);
+		void Finalize(void);
 
-		void Finalize(void)
-		{
-			_instance.get()->deinit();
-		}
+		unsigned int AddSound(std::string& file_path, bool do_loop);
 
-		unsigned int AddSound(std::string& file_path, bool do_loop = false)
-		{
-			SoLoud::Wav sound;
-			sound.load(file_path.c_str());
-			sound.setLooping(do_loop);
+		unsigned int AddMusic(std::string& file_path, bool do_loop);
 
-			return _sounds.Load(std::make_shared<SoLoud::Wav>(sound));
-		}
+		void Play(unsigned int id);
 
-		unsigned int AddMusic(std::string& file_path, bool do_loop = false)
-		{
-			SoLoud::Wav sound;
-			sound.load(file_path.c_str());
-			sound.setLooping(do_loop);
-			sound.setFilter(0, &_filter);
+		void Play3d(unsigned int id, float x, float y, float z);
 
-			return _sounds.Load(std::make_shared<SoLoud::Wav>(sound));
-		}
+		void Stop(unsigned int id);
 
-		void Set3dMinMaxDistance(unsigned int id, float min_distance, float max_distance)
-		{
-			_sounds.Get(id)->set3dMinMaxDistance(min_distance, max_distance);
-		}
+		void Release(unsigned int id);
 
-		void Set3dAttenuation(unsigned int id, float rolloff_factor, unsigned int type = SoLoud::AudioSource::EXPONENTIAL_DISTANCE)
-		{
-			_sounds.Get(id)->set3dAttenuation(type, rolloff_factor);
-		}
-
-		void Set3dDopplerFactor(unsigned int id, float doppler_factor)
-		{
-			_sounds.Get(id)->set3dDopplerFactor(doppler_factor);
-		}
-
-		void Set3dListenerRelative(unsigned int id, bool listener_relative)
-		{
-			_sounds.Get(id)->set3dListenerRelative(listener_relative);
-		}
-
-		void Set3dDistanceDelay(unsigned int id, bool distance_delay)
-		{
-			_sounds.Get(id)->set3dDistanceDelay(distance_delay);
-		}
-
-		void Set3dSourceParameters(unsigned int id, float pos_x, float pos_y, float pos_z, float velocity_x, float velocity_y, float velocity_z)
-		{
-			_instance.get()->set3dSourceParameters(_handle_id[id], pos_x, pos_y, pos_z, velocity_x, velocity_y, velocity_z);
-		}
-
-		void Play(unsigned int id)
-		{
-			SoundHandle sh = _instance.get()->play(*_sounds.Get(id), 1);
-			
-			_handle_id[id] = sh;
-		}
-
-		void Play3d(unsigned int id, float x, float y, float z)
-		{
-			SoundHandle sh = _instance.get()->play3d(*_sounds.Get(id), x, y, z);
-
-			_handle_id[id] = sh;
-		}
-
-		void Stop(unsigned int id)
-		{
-			_instance.get()->stop(_handle_id[id]);
-		}
-
-		void Release(unsigned int id)
-		{
-			_sounds.Release(id);
-		}
+		void Reset(void);
 
 		// frequency?
-		float *GetWaveShape(void)
-		{
-			_instance.get()->getWave();
-		}
+		float *GetWaveShape(void);
 
 		// calculate spactrum
-		float *GetFFT(void)
-		{
-			_instance.get()->calcFFT();
-		}
+		float *GetFFT(void);
 
 
 	};

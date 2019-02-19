@@ -1,39 +1,38 @@
 
 #include <Windows.h>
 
-#include"..\Input\Input.h"
-#pragma comment(lib, "Input.lib")
-
-#include"..\Utilities\Utils.h"
-#include"..\Utilities\Log.h"
-#pragma comment(lib, "Utilities.lib")
-
-#pragma comment(lib, "Framework.lib")
-
-#pragma comment(lib, "Graphics.lib")
-
 #include"BaseSystem.h"
 #include"GameManager.h"
+#include"..\Input\Input.h"
+#include"..\Utilities\Utils.h"
+#include"..\Utilities\Log.h"
 #include"..\Graphics\Window.h"
+
+#pragma comment(lib, "Input.lib")
+#pragma comment(lib, "Utilities.lib")
+#pragma comment(lib, "Framework.lib")
+#pragma comment(lib, "Graphics.lib")
+
+#include <crtdbg.h>
 
 namespace Prizm
 {
 	class BaseSystem::Impl
 	{
 	public:
-		Impl() : app_exit_(false)
-			   , input_module_(nullptr)
-			   , game_manager_(std::make_unique<GameManager>()){}
+		Impl() : _app_exit(false)
+			   , _input_module(nullptr)
+			   , _game_manager(std::make_unique<GameManager>()){}
 
-		bool app_exit_;
-		HMODULE input_module_;
-		std::unique_ptr<GameManager> game_manager_;
+		bool _app_exit;
+		HMODULE _input_module;
+		std::unique_ptr<GameManager> _game_manager;
 
 		void MessageLoop(void)
 		{
 			MSG msg = {};
 
-			while (!app_exit_)
+			while (!_app_exit)
 			{
 				if (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE))
 				{
@@ -52,18 +51,18 @@ namespace Prizm
 						if (MessageBoxA(Window::GetWindowHandle(), "Quit ?", "User Notification", MB_YESNO | MB_DEFBUTTON2) == IDYES)
 						{
 							Log::Info("[EXIT] KEY DOWN ESC");
-							app_exit_ = true;
+							_app_exit = true;
 						}
 					}
 				}
 
 				if (msg.message == WM_QUIT)
 				{
-					app_exit_ = true;
+					_app_exit = true;
 				}
 				else
 				{
-					app_exit_ |= game_manager_->Run();
+					_app_exit |= _game_manager->Run();
 				}
 
 				Input::PostStateUpdate();
@@ -78,6 +77,8 @@ namespace Prizm
 
 	bool BaseSystem::Initialize(void)
 	{
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 		std::string workspace_directory = DirectoryUtils::GetSpecialFolderPath(DirectoryUtils::FolderType::APPDATA) + "\\PrizmEngine";
 
 #ifdef _DEBUG
@@ -87,7 +88,7 @@ namespace Prizm
 
 		if (!Window::Initialize()) return false;
 
-		if (!_impl->game_manager_->Initialize(Window::GetWindowHandle())) return false;
+		if (!_impl->_game_manager->Initialize(Window::GetWindowHandle())) return false;
 
 		return true;
 	}
@@ -103,7 +104,7 @@ namespace Prizm
 
 		Window::Finalize();
 
-		_impl->game_manager_->Finalize();
-		_impl->game_manager_.reset();
+		_impl->_game_manager->Finalize();
+		_impl->_game_manager.reset();
 	}
 }

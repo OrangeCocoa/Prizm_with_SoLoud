@@ -53,7 +53,7 @@ namespace Prizm
 			}
 		};
 
-		ResourcePool<Source> sound_sources_;
+		ResourcePool<Source> _sound_sources;
 
 	public:
 		// attatch 3d object

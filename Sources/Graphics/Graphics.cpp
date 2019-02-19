@@ -16,42 +16,42 @@ namespace Prizm
 {
 	namespace Graphics
 	{
-		Microsoft::WRL::ComPtr<ID3D11Device>								_device;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext>							_device_context; // immediate
-		Microsoft::WRL::ComPtr<IDXGISwapChain>								_swap_chain;
+		Microsoft::WRL::ComPtr<ID3D11Device>                         _device;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext>                  _device_context;
+		Microsoft::WRL::ComPtr<IDXGISwapChain>                       _swap_chain;
 
-		std::vector<Microsoft::WRL::ComPtr<ID3D11RenderTargetView>>			_render_targets;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>					_shadow_resource;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11RenderTargetView>>  _render_targets;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>             _shadow_resource;
 
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>						_depth_stencil_view;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>               _depth_stencil_view;
 
-		std::vector<Microsoft::WRL::ComPtr<ID3D11BlendState>>				_blend_states;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11SamplerState>>				_sampler_states;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>>			_rasterizer_states;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11DepthStencilState>>		_depth_stencil_states;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11BlendState>>        _blend_states;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11SamplerState>>	     _sampler_states;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>>   _rasterizer_states;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> _depth_stencil_states;
 
-		D3D11_VIEWPORT														_view_port;
+		D3D11_VIEWPORT                                               _view_port;
 
-		Microsoft::WRL::ComPtr<IDXGIAdapter>								_adapter;
-		Microsoft::WRL::ComPtr<IDXGIFactory>								_factory;
+		Microsoft::WRL::ComPtr<IDXGIAdapter>                         _adapter;
+		Microsoft::WRL::ComPtr<IDXGIFactory>                         _factory;
 #ifdef _DEBUG
-		Microsoft::WRL::ComPtr<ID3D11Debug>									_debug;
-		Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation>					_annotation;
+		Microsoft::WRL::ComPtr<ID3D11Debug>	                         _debug;
+		Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation>            _annotation;
 #endif
-		std::vector<DXGI_MODE_DESC>											_display_mode_list;
+		std::vector<DXGI_MODE_DESC>	                                 _display_mode_list;
 
-		bool				_vsync_enabled;
-		int					_vram;
-		char				_gpu_description[128];
-		HWND				_hwnd;
-		D3D_FEATURE_LEVEL	_feature_level;
+		bool              _vsync_enabled;
+		int	              _vram;
+		char              _gpu_description[128];
+		HWND              _hwnd;
+		D3D_FEATURE_LEVEL _feature_level;
 		
 		// MSAA sample desc
-		DXGI_SAMPLE_DESC	_sample_desc;
+		DXGI_SAMPLE_DESC  _sample_desc;
 
 		unsigned int _window_width, _window_height;
 		unsigned int _numerator, _denominator;
-		bool		 _fullscreen;
+		bool         _fullscreen;
 
 		void MSAASampleCheck(void)
 		{

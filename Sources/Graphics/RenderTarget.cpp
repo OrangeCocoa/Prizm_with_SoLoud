@@ -10,9 +10,9 @@ namespace Prizm
 	class RenderTarget::Impl
 	{
 	public:
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> RTV_;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> SRV_;
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> tex_;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _rtv;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _srv;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _tex;
 	};
 
 	RenderTarget::RenderTarget() : _impl(std::make_unique<Impl>()){}
@@ -29,7 +29,7 @@ namespace Prizm
 
 		swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&tex_2d));
 
-		device->CreateRenderTargetView(tex_2d.Get(), nullptr, _impl->RTV_.GetAddressOf());
+		device->CreateRenderTargetView(tex_2d.Get(), nullptr, _impl->_rtv.GetAddressOf());
 
 		return true;
 	}
@@ -63,23 +63,23 @@ namespace Prizm
 		RTVDesc.Format = desc.Format;
 		RTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		RTVDesc.Texture2D.MipSlice = 0;
-		device->CreateRenderTargetView(texture_2d.Get(), &RTVDesc, _impl->RTV_.GetAddressOf());
+		device->CreateRenderTargetView(texture_2d.Get(), &RTVDesc, _impl->_rtv.GetAddressOf());
 
 		SRVDesc.Format = desc.Format;
 		SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		SRVDesc.Texture2D.MipLevels = 1;
-		device->CreateShaderResourceView(texture_2d.Get(), &SRVDesc, _impl->SRV_.GetAddressOf());
+		device->CreateShaderResourceView(texture_2d.Get(), &SRVDesc, _impl->_srv.GetAddressOf());
 
 		return true;
 	}
 
 	ID3D11RenderTargetView* RenderTarget::GetRTV()
 	{
-		return _impl->RTV_.Get();
+		return _impl->_rtv.Get();
 	}
 
 	ID3D11ShaderResourceView* RenderTarget::GetSRV()
 	{
-		return _impl->SRV_.Get();
+		return _impl->_srv.Get();
 	}
 }
